@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 01:04:32 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/11/17 16:50:02 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/11/17 18:40:58 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/time.h>
 #include "philo.h"
 
-static long	get_ts(void)
+static void	init_philo(t_table *table, int i)
 {
-	long			ts;
-	struct timeval	s_tv;
-
-	gettimeofday(&s_tv, 0);
-	ts = s_tv.tv_sec * 1000 + s_tv.tv_usec / 1000;
-	return (ts);
+	table->philos[i].seat = i + 1;
+	table->philos[i].fork_1 = &table->forks[i];
+	table->philos[i].fork_2 = &table->forks[i + 1];
+	if (table->philos[i].seat == table->pax)
+	{
+		table->philos[i].fork_1 = &table->forks[0];
+		table->philos[i].fork_2 = &table->forks[i];
+	}
 }
 
 static void	*live(void *arg)
@@ -50,7 +51,7 @@ static void	*live(void *arg)
 	return (0);
 }
 
-static void	pthread_helper(void *f, t_table *table)
+static int	pthread_helper(void *f, t_table *table)
 {
 	int		i;
 	int		error;
@@ -62,24 +63,29 @@ static void	pthread_helper(void *f, t_table *table)
 			error = ((t_mutex_init)f)(&table->forks[i], 0);
 		else if (f == pthread_create)
 		{
-			table->philos[i].seat = i + 1;
-			table->philos[i].fork_1 = &table->forks[i];
-			table->philos[i].fork_2 = &table->forks[i + 1];
-			if (table->philos[i].seat == table->pax)
-			{
-				table->philos[i].fork_1 = &table->forks[0];
-				table->philos[i].fork_2 = &table->forks[i];
-			}
-			error = ((t_create)f)(&table->philos[i].philo, 0, live, (void *)&table->philos[i]);
+			init_philo(table, i);
+			error = ((t_create)f)(&table->philos[i].philo, 0, live, \
+				(void *)&table->philos[i]);
 		}
 		else if (f == pthread_join)
 			error = ((t_join)f)(table->philos[i].philo, 0);
 		else if (f == pthread_mutex_destroy)
 			error = ((t_mutex_destroy)f)(&table->forks[i]);
-		if (error != 0)
-			printf("Error\n");
+		if (error)
+			return (1);
 		++i;
 	}
+	return (0);
+}
+
+static void	cleanup(t_table *table, const char *str)
+{
+	if (table->forks)
+		free(table->forks);
+	if (table->philos)
+		free(table->philos);
+	if (str)
+		printf("%s\n", str);
 }
 
 int	main(int argc, char **argv)
@@ -90,24 +96,21 @@ int	main(int argc, char **argv)
 	{
 		table.pax = ft_atoi(argv[1]);
 		table.philos = malloc(sizeof(t_philo) * table.pax);
-		if (!table.philos)
-		{
-			printf("Error\n");
-			return (1);
-		}
 		table.forks = malloc(sizeof(pthread_mutex_t) * table.pax);
-		if (!table.forks)
+		if (!table.philos || !table.forks)
 		{
-			printf("Error\n");
-			free(table.philos);
+			cleanup(&table, "Error: malloc");
 			return (1);
 		}
-		pthread_helper(pthread_mutex_init, &table);
-		pthread_helper(pthread_create, &table);
-		pthread_helper(pthread_join, &table);
-		pthread_helper(pthread_mutex_destroy, &table);
-		free(table.forks);
-		free(table.philos);
+		if (pthread_helper(pthread_mutex_init, &table) \
+			|| pthread_helper(pthread_create, &table) \
+			|| pthread_helper(pthread_join, &table) \
+			|| pthread_helper(pthread_mutex_destroy, &table))
+		{
+			cleanup(&table, "Error: pthread");
+			return (1);
+		}
+		cleanup(&table, 0);
 	}
 	return (0);
 }

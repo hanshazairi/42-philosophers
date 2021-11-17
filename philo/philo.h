@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 14:25:52 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/11/17 16:12:30 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/11/17 18:37:30 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef int	(*t_join)(pthread_t, void **value_ptr);
 typedef int	(*t_mutex_destroy)(pthread_mutex_t *);
 
 /* utils.c */
-int	ft_atoi(const char *str);
+int		ft_atoi(const char *str);
+long	get_ts(void);
 
 #endif
