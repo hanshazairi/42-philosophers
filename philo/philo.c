@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 01:04:32 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/11/17 02:10:09 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/11/17 14:36:44 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/time.h>
+#include "philo.h"
 
 #define PHILOS 5
 
@@ -65,47 +66,33 @@ void	*live(void *arg)
 	return (0);
 }
 
-int	main(void)
+void	pthread_helper(void *f)
 {
-	int	i;
+	int		i;
+	int		error;
 
 	i = 0;
-	get_ts();
 	while (i < PHILOS)
 	{
-		if (pthread_mutex_init(&g_forks[i++], 0) != 0)
-		{
+		if (f == pthread_mutex_init)
+			error = ((t_mutex_init)f)(&g_forks[i], 0);
+		else if (f == pthread_create)
+			error = ((t_create)f)(&g_philos[i], 0, live, (void *)(size_t)i);
+		else if (f == pthread_join)
+			error = ((t_join)f)(g_philos[i], 0);
+		else if (f == pthread_mutex_destroy)
+			error = ((t_mutex_destroy)f)(&g_forks[i]);
+		if (error != 0)
 			printf("Error\n");
-			return (1);
-		}
-	}
-	i = 0;
-	while (i < PHILOS)
-	{
-		if (pthread_create(&g_philos[i], 0, live, (void *)(size_t)i) != 0)
-		{
-			printf("Error\n");
-			return (2);
-		}
 		++i;
 	}
-	i = 0;
-	while (i < PHILOS)
-	{
-		if (pthread_join(g_philos[i++], 0) != 0)
-		{
-			printf("Error\n");
-			return (3);
-		}
-	}
-	i = 0;
-	while (i < PHILOS)
-	{
-		if (pthread_mutex_destroy(&g_forks[i++]) != 0)
-		{
-			printf("Error\n");
-			return (4);
-		}
-	}
+}
+
+int	main(void)
+{
+	pthread_helper(pthread_mutex_init);
+	pthread_helper(pthread_create);
+	pthread_helper(pthread_join);
+	pthread_helper(pthread_mutex_destroy);
 	return (0);
 }
