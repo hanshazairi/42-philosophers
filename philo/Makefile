@@ -1,5 +1,5 @@
 NAME = philo
-SOURCES = philo.c utils.c
+SOURCES = philo.c utils.c libft_utils.c
 OBJECTS = $(SOURCES:.c=.o)
 
 CC = gcc
@@ -10,7 +10,7 @@ all: $(NAME)
 bonus: $(NAME)
 
 $(NAME): $(OBJECTS)
-	$(CC) -o $@ $?
+	$(CC) -o $@ $^
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) $?
