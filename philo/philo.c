@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 01:04:32 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/12/07 02:38:00 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/12/07 03:23:19 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ static int	init_philo(char **argv, t_table *table, int i)
 	table->philos[i].seat = i + 1;
 	table->philos[i].has_fork_1 = 0;
 	table->philos[i].has_fork_2 = 0;
-	table->philos[i].lifespan = ft_atoi(argv[1]) * 1000;
+	table->philos[i].lifespan = ft_atoi(argv[1]);
 	table->philos[i].servings = -1;
 	if (argv[4])
 		table->philos[i].servings = ft_atoi(argv[4]);
-	table->philos[i].eat_duration = ft_atoi(argv[2]) * 1000;
-	table->philos[i].sleep_duration = ft_atoi(argv[3]) * 1000;
+	table->philos[i].eat_duration = ft_atoi(argv[2]);
+	table->philos[i].sleep_duration = ft_atoi(argv[3]);
 	table->philos[i].can_eat = &table->is_open;
 	table->philos[i].last_ate = get_ts();
 	table->philos[i].pen = &table->pen;

@@ -6,12 +6,11 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 01:44:42 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/12/07 02:43:11 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/12/07 03:32:00 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
-#include <unistd.h>
 #include <sys/time.h>
 #include "philo.h"
 
@@ -65,11 +64,11 @@ void	*live(void *arg)
 		pthread_mutex_lock(philo->fork_2);
 		print_status(0, philo, "has taken a fork");
 		print_status(0, philo, "is eating");
-		usleep(philo->eat_duration);
+		ft_usleep(philo->eat_duration * 1000);
 		print_status(0, philo, "is sleeping");
 		pthread_mutex_unlock(philo->fork_1);
 		pthread_mutex_unlock(philo->fork_2);
-		usleep(philo->sleep_duration);
+		ft_usleep(philo->sleep_duration * 1000);
 	}
 	return (0);
 }
@@ -83,13 +82,13 @@ void	*die(void *arg)
 	while (*philo->can_eat && philo->servings != 0)
 	{
 		ts = get_ts();
-		if (ts - philo->last_ate > philo->lifespan / 1000)
+		if (ts - philo->last_ate > philo->lifespan)
 		{
 			print_status(ts, philo, "died");
 			*philo->can_eat = 0;
 			break ;
 		}
-		usleep(philo->lifespan);
+		ft_usleep(philo->lifespan * 1000);
 	}
 	if (philo->has_fork_1)
 		pthread_mutex_unlock(philo->fork_1);

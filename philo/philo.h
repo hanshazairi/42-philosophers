@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 14:25:52 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/12/07 02:10:57 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/12/07 02:56:05 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,6 @@ void	*die(void *arg);
 int		ft_atoi(char *str);
 int		ft_strncmp(char *str_1, char *str_2, int n);
 int		ft_strlen(char *s);
+void	ft_usleep(unsigned int n);
 
 #endif
