@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 15:08:10 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/12/07 03:24:25 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/12/07 17:06:57 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,6 @@ void	ft_usleep(unsigned int n)
 		step_ts = get_ts();
 		if ((step_ts - start_ts) * 1000 >= n)
 			break ;
-		usleep(10000);
+		usleep(500);
 	}
 }

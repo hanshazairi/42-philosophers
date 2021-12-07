@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 01:44:42 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/12/07 03:32:00 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2021/12/07 17:07:00 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	*die(void *arg)
 			*philo->can_eat = 0;
 			break ;
 		}
-		ft_usleep(philo->lifespan * 1000);
+		ft_usleep(500);
 	}
 	if (philo->has_fork_1)
 		pthread_mutex_unlock(philo->fork_1);
