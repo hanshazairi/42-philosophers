@@ -1,11 +1,31 @@
 name: build
-on: [push]
+
+on:
+  push:
+    paths:
+      - .github/**.yaml
+      - '**/Makefile'
+      - '**.c'
+      - '**.h'
+    branches:
+      - '**'
+
+  pull_request:
+    paths:
+      - .github/**.yaml
+      - '**/Makefile'
+      - '**.c'
+      - '**.h'
+    branches:
+      - '**'
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
-        with:
-          submodules: recursive
-      - name: make 
-        run: make -C philo
+
+      - run: make -C philo
+
+      - run: make -C philo_bonus

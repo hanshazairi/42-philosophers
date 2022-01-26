@@ -1,8 +1,35 @@
 name: norminette
-on: [push]
+
+on:
+  push:
+    paths:
+      - .github/workflows/norminette.yaml
+      - '**.c'
+      - '**.h'
+    branches:
+      - '**'
+
+  pull_request:
+    paths:
+      - .github/workflows/norminette.yaml
+      - '**.c'
+      - '**.h'
+    branches:
+      - '**'
+
 jobs:
-  norminette:
+  pycodestyle:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
-      - uses: hanshazairi/42-norminette-action@v1.1.0
+
+      - uses: actions/setup-python@v2.3.1
+        with:
+          python-version: '3.9'
+
+      - run: python3 -m pip install -U pip
+      
+      - run: python3 -m pip install -U norminette
+      
+      - run: find . -type f \( -name '*.c' -o -name '*.h' \) | xargs norminette
