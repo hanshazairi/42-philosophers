@@ -6,12 +6,14 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 23:55:39 by hbaddrul          #+#    #+#             */
-/*   Updated: 2022/01/26 13:23:02 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2022/01/26 15:49:15 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <sys/wait.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include "philo_bonus.h"
@@ -36,6 +38,7 @@ static void	waiter(t_table *table)
 	int	status;
 
 	i = -1;
+	status = 0;
 	while (++i < table->pax)
 	{
 		waitpid(-1, &status, 0);
@@ -64,6 +67,7 @@ static int	helper(char **argv, t_table *table)
 					|| pthread_join(table->philos[i].philo_live, 0) \
 					|| pthread_join(table->philos[i].philo_die, 0))
 				return (1);
+			free(table->philos);
 			exit(0);
 		}
 		else if (pid < 0)
@@ -81,16 +85,16 @@ int	main(int argc, char **argv)
 	{
 		table.pax = ft_atoi(argv[1]);
 		table.philos = malloc(sizeof(t_philo) * table.pax);
-		if (!table.philos)
-			return (1);
-		sem_unlink("forks");
 		sem_unlink("pen");
+		sem_unlink("forks");
 		table.forks = sem_open("forks", O_CREAT, S_IRWXU, table.pax);
 		table.pen = sem_open("pen", O_CREAT, S_IRWXU, 1);
-		if (table.forks == SEM_FAILED || table.pen == SEM_FAILED \
-				|| helper(argv + 1, &table))
+		if (!table.philos || table.forks == SEM_FAILED \
+				|| table.pen == SEM_FAILED || helper(argv + 1, &table))
 		{
-			free(table.philos);
+			if (table.philos)
+				free(table.philos);
+			printf("error\n");
 			return (1);
 		}
 		sem_close(table.pen);

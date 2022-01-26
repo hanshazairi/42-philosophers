@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 01:03:56 by hbaddrul          #+#    #+#             */
-/*   Updated: 2022/01/26 12:31:26 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2022/01/26 15:57:00 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,25 @@ long	get_ts(void)
 	return (ts);
 }
 
+void	*die(void *arg)
+{
+	long	ts;
+	t_philo	*philo;
+
+	philo = (t_philo *)arg;
+	while (philo->servings != 0)
+	{
+		ts = get_ts();
+		if (ts - philo->last_ate > philo->lifespan)
+		{
+			print_status(ts, philo, "died");
+			exit(1);
+		}
+		ft_usleep(500);
+	}
+	return (0);
+}
+
 void	*live(void *arg)
 {
 	t_philo	*philo;
@@ -59,25 +78,6 @@ void	*live(void *arg)
 		sem_post(philo->forks);
 		ft_usleep(philo->sleep_duration * 1000);
 		philo->servings -= 1;
-	}
-	return (0);
-}
-
-void	*die(void *arg)
-{
-	long	ts;
-	t_philo	*philo;
-
-	philo = (t_philo *)arg;
-	while (philo->servings != 0)
-	{
-		ts = get_ts();
-		if (ts - philo->last_ate > philo->lifespan)
-		{
-			print_status(ts, philo, "died");
-			exit(1);
-		}
-		ft_usleep(500);
 	}
 	return (0);
 }

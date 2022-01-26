@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 01:40:30 by hbaddrul          #+#    #+#             */
-/*   Updated: 2022/01/25 01:40:45 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2022/01/26 16:11:19 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,16 @@ int	ft_atoi(char *str)
 	ret = 0;
 	while (*str)
 		ret = ret * 10 + (*str++ - '0');
+	return (ret);
+}
+
+int	ft_strlen(char *s)
+{
+	int	ret;
+
+	ret = 0;
+	while (*s++)
+		++ret;
 	return (ret);
 }
 
@@ -42,16 +52,6 @@ int	ft_strncmp(char *str_1, char *str_2, int n)
 		--str_2;
 	}
 	return (*(unsigned char *)str_1 - *(unsigned char *)str_2);
-}
-
-int	ft_strlen(char *s)
-{
-	int	ret;
-
-	ret = 0;
-	while (*s++)
-		++ret;
-	return (ret);
 }
 
 void	ft_usleep(unsigned int n)

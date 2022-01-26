@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 23:56:07 by hbaddrul          #+#    #+#             */
-/*   Updated: 2022/01/26 02:18:12 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2022/01/26 15:38:29 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ typedef struct s_table
 
 /* utils.c */
 long	get_ts(void);
-void	*live(void *arg);
 void	*die(void *arg);
+void	*live(void *arg);
 
 /* libft_utils.c */
 int		ft_atoi(char *str);
-int		ft_strncmp(char *str_1, char *str_2, int n);
 int		ft_strlen(char *s);
+int		ft_strncmp(char *str_1, char *str_2, int n);
 void	ft_usleep(unsigned int n);
 
 #endif
