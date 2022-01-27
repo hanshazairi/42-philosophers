@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 01:03:56 by hbaddrul          #+#    #+#             */
-/*   Updated: 2022/01/26 15:57:00 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2022/01/27 11:15:34 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	*die(void *arg)
 		if (ts - philo->last_ate > philo->lifespan)
 		{
 			print_status(ts, philo, "died");
-			exit(1);
+			exit(philo->seat);
 		}
 		ft_usleep(500);
 	}

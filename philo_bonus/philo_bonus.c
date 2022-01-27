@@ -6,13 +6,14 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 23:55:39 by hbaddrul          #+#    #+#             */
-/*   Updated: 2022/01/26 15:49:15 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2022/01/27 11:26:48 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/wait.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -42,8 +43,13 @@ static void	waiter(t_table *table)
 	while (++i < table->pax)
 	{
 		waitpid(-1, &status, 0);
-		if (WIFEXITED(status) && (WEXITSTATUS(status) == 1))
+		if (WIFEXITED(status) && (WEXITSTATUS(status) > 0))
+		{
+			while (i < table->pax)
+				if (++i != WEXITSTATUS(status))
+					kill(table->philos[i - 1].pid, SIGKILL);
 			return ;
+		}
 	}
 	return ;
 }
@@ -51,14 +57,13 @@ static void	waiter(t_table *table)
 static int	helper(char **argv, t_table *table)
 {
 	int	i;
-	int	pid;
 
 	i = -1;
 	while (++i < table->pax)
 	{
 		init_philo(argv, table, i);
-		pid = fork();
-		if (!pid)
+		table->philos[i].pid = fork();
+		if (!table->philos[i].pid)
 		{
 			if (pthread_create(&table->philos[i].philo_live, 0, live, \
 					&table->philos[i]) \
@@ -70,7 +75,7 @@ static int	helper(char **argv, t_table *table)
 			free(table->philos);
 			exit(0);
 		}
-		else if (pid < 0)
+		else if (table->philos[i].pid < 0)
 			return (1);
 	}
 	waiter(table);

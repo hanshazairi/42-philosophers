@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 23:56:07 by hbaddrul          #+#    #+#             */
-/*   Updated: 2022/01/26 15:38:29 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2022/01/27 10:56:01 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 typedef struct s_philo
 {
+	int			pid;
 	int			seat;
 	int			lifespan;
 	int			servings;
