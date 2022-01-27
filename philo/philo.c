@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 01:04:32 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/12/07 03:23:19 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2022/01/26 16:05:04 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ static int	init_philo(char **argv, t_table *table, int i)
 
 static int	pthread_helper(char **argv, void *f, t_table *table)
 {
-	int		i;
-	int		error;
+	int	i;
+	int	error;
 
 	i = -1;
 	error = 0;

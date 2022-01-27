@@ -6,12 +6,12 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 01:44:42 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/12/07 17:07:00 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2022/01/27 11:30:05 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include <sys/time.h>
+#include <stdio.h>
 #include "philo.h"
 
 static void	print_status(long ts, t_philo *philo, char *status)
@@ -50,29 +50,6 @@ long	get_ts(void)
 	return (ts);
 }
 
-void	*live(void *arg)
-{
-	t_philo	*philo;
-
-	philo = (t_philo *)arg;
-	while (*philo->can_eat && philo->servings != 0)
-	{
-		philo->servings -= 1;
-		print_status(0, philo, "is thinking");
-		pthread_mutex_lock(philo->fork_1);
-		print_status(0, philo, "has taken a fork");
-		pthread_mutex_lock(philo->fork_2);
-		print_status(0, philo, "has taken a fork");
-		print_status(0, philo, "is eating");
-		ft_usleep(philo->eat_duration * 1000);
-		print_status(0, philo, "is sleeping");
-		pthread_mutex_unlock(philo->fork_1);
-		pthread_mutex_unlock(philo->fork_2);
-		ft_usleep(philo->sleep_duration * 1000);
-	}
-	return (0);
-}
-
 void	*die(void *arg)
 {
 	long	ts;
@@ -94,5 +71,28 @@ void	*die(void *arg)
 		pthread_mutex_unlock(philo->fork_1);
 	if (philo->has_fork_2)
 		pthread_mutex_unlock(philo->fork_2);
+	return (0);
+}
+
+void	*live(void *arg)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)arg;
+	while (*philo->can_eat && philo->servings != 0)
+	{
+		philo->servings -= 1;
+		print_status(0, philo, "is thinking");
+		pthread_mutex_lock(philo->fork_1);
+		print_status(0, philo, "has taken a fork");
+		pthread_mutex_lock(philo->fork_2);
+		print_status(0, philo, "has taken a fork");
+		print_status(0, philo, "is eating");
+		ft_usleep(philo->eat_duration * 1000);
+		print_status(0, philo, "is sleeping");
+		pthread_mutex_unlock(philo->fork_1);
+		pthread_mutex_unlock(philo->fork_2);
+		ft_usleep(philo->sleep_duration * 1000);
+	}
 	return (0);
 }

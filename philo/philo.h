@@ -6,7 +6,7 @@
 /*   By: hbaddrul <hbaddrul@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 14:25:52 by hbaddrul          #+#    #+#             */
-/*   Updated: 2021/12/07 02:56:05 by hbaddrul         ###   ########.fr       */
+/*   Updated: 2022/01/26 16:10:42 by hbaddrul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,13 @@ typedef int	(*t_mutex_destroy)(pthread_mutex_t *);
 
 /* utils.c */
 long	get_ts(void);
-void	*live(void *arg);
 void	*die(void *arg);
+void	*live(void *arg);
 
 /* libft_utils.c */
 int		ft_atoi(char *str);
-int		ft_strncmp(char *str_1, char *str_2, int n);
 int		ft_strlen(char *s);
+int		ft_strncmp(char *str_1, char *str_2, int n);
 void	ft_usleep(unsigned int n);
 
 #endif
